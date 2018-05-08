@@ -12,3 +12,13 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
+
+
+# User add
+# vscode
+.vscode
+debug
+
+# golang
+/bin
+/pkg
