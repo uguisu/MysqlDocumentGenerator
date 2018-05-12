@@ -1,15 +1,23 @@
 package main
 
 import (
-	"github.com/uguisu/connection"
+	"database/sql"
+	"fmt"
 	"log"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 	log.Println("Start")
 
+	// init connection information
+	mysqlConnectInfo := ConnectionInformation{
+		"root", "root", "himysql", "3306", "192.168.11.120",
+	}
+
 	// Get database
-	db, err := connection.GetDB()
+	db, err := getDB(mysqlConnectInfo)
 	checkErr(err)
 
 	// make sure db connection will be closed
@@ -20,8 +28,8 @@ func main() {
 	checkErr(err)
 
 	// Declare table variable
-	var tabelInfoRow tabelInfo
-	tableRecordCollection := make([]tabelInfo, 0)
+	var tabelInfoRow TabelInfo
+	tableRecordCollection := make([]TabelInfo, 0)
 
 	// Fetch data
 	for rows.Next() {
@@ -54,12 +62,35 @@ func main() {
 		tableRecordCollection = append(tableRecordCollection, tabelInfoRow)
 	}
 
-
 	log.Printf("total = %d", len(tableRecordCollection))
 }
 
 func checkErr(err error) {
 	if err != nil {
 		panic(err)
+	}
+}
+
+/**
+ * Get database connection
+ */
+func getDB(con ConnectionInformation) (*sql.DB, error) {
+
+	connectString := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8",
+		con.user,
+		con.pwd,
+		con.serverName,
+		con.port,
+		con.schema,
+	)
+
+	db, err := sql.Open("mysql", connectString)
+
+	if err != nil {
+		log.Fatalln(err)
+		return nil, err
+	} else {
+		return db, nil
 	}
 }
