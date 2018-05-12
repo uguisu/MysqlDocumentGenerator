@@ -2,8 +2,10 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
+
+	config "github.com/uguisu/config"
+	connectionInfo "github.com/uguisu/connectionInfo"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,13 +13,16 @@ import (
 func main() {
 	log.Println("Start")
 
-	// init connection information
-	mysqlConnectInfo := ConnectionInformation{
-		"root", "root", "himysql", "3306", "192.168.11.120",
+	// Load config
+	configFinished := config.LoadConfig()
+	if <-configFinished {
+		log.Println("Load config finished.")
+	} else {
+		log.Fatal("Unknow excetion whien loading config")
 	}
 
 	// Get database
-	db, err := getDB(mysqlConnectInfo)
+	db, err := getDB(config.GetConnectionInfoObject())
 	checkErr(err)
 
 	// make sure db connection will be closed
@@ -74,18 +79,9 @@ func checkErr(err error) {
 /**
  * Get database connection
  */
-func getDB(con ConnectionInformation) (*sql.DB, error) {
+func getDB(in *connectionInfo.ConnectionInfo) (*sql.DB, error) {
 
-	connectString := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s?charset=utf8",
-		con.user,
-		con.pwd,
-		con.serverName,
-		con.port,
-		con.schema,
-	)
-
-	db, err := sql.Open("mysql", connectString)
+	db, err := sql.Open("mysql", in.GetConnectionString())
 
 	if err != nil {
 		log.Fatalln(err)

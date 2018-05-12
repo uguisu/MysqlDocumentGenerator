@@ -39,12 +39,3 @@ type TabelInfo struct {
 	is_nullable              string
 	column_comment           string
 }
-
-// Database connection information
-type ConnectionInformation struct {
-	user       string
-	pwd        string
-	schema     string
-	port       string
-	serverName string
-}
