@@ -1,9 +1,9 @@
-package connectionInfo
+package dbconnect
 
 import "fmt"
 
 type IgetConnection interface {
-	getConnectionString() string
+	GetConnectionString() string
 }
 
 // Database connection information
@@ -36,7 +36,7 @@ func Create() *ConnectionInfo {
 	return &ConnectionInfo{
 		user:       "root",
 		pwd:        "root",
-		serverName: "192.168.11.120",
+		serverName: "192.168.11.116",
 		port:       "3306",
 		schema:     "himysql",
 	}

@@ -3,13 +3,13 @@ package config
 import (
 	"log"
 
-	connectionInfo "github.com/uguisu/connectionInfo"
+	dbconnect "github.com/uguisu/dbconnect"
 )
 
 // connection information object
-var _connectionInfo *connectionInfo.ConnectionInfo
+var _connectionInfo *dbconnect.ConnectionInfo
 
-func GetConnectionInfoObject() *connectionInfo.ConnectionInfo {
+func GetConnectionInfoObject() *dbconnect.ConnectionInfo {
 	return _connectionInfo
 }
 
@@ -25,7 +25,7 @@ func loadDatabaseConfig() <-chan bool {
 		log.Println("Execute loadDatabaseConfig() ...")
 
 		// Create settings
-		_connectionInfo = connectionInfo.Create()
+		_connectionInfo = dbconnect.Create()
 
 		loadDatabaseConfigFinished <- true
 		close(loadDatabaseConfigFinished)
@@ -43,6 +43,7 @@ func LoadConfig() <-chan bool {
 	configFinished := make(chan bool)
 
 	// Load database config
+	// TODO not a goroutin
 	loadDatabaseConfigFinished := loadDatabaseConfig()
 
 	// waiting settings method return
