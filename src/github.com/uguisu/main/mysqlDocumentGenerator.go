@@ -158,7 +158,7 @@ func writeToMd(tableMap map[string][]TabelInfo) {
 
 		_, err = f.Write([]byte(rowStr))
 
-		// rowStr = ""
+		rowStr = ""
 	}
 
 	f.Sync()
