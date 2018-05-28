@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	config "github.com/uguisu/config"
 	dbconnect "github.com/uguisu/dbconnect"
@@ -36,9 +37,7 @@ func main() {
 	// Read and transfer data
 	tableMap := transferRowsToMap(rows)
 
-	for k, v := range tableMap {
-		fmt.Printf("k=%v, v=%v\n", k, v)
-	}
+	writeToMd(tableMap)
 }
 
 func checkErr(err error) {
@@ -111,4 +110,49 @@ func transferRowsToMap(rows *sql.Rows) map[string][]TabelInfo {
 	tableMap[lastTableName] = tableRecordCollection[lastStartIndex:len(tableRecordCollection)]
 
 	return tableMap
+}
+
+/**
+ * Write to file in markdown format
+ */
+func writeToMd(tableMap map[string][]TabelInfo) {
+	var rowStr = ""
+	var err error = nil
+
+	// create output file
+	f, err := os.Create(OutputFileName)
+	checkErr(err)
+
+	defer f.Close()
+
+	for k, v := range tableMap {
+		// Title
+		title := fmt.Sprintf("\n## %s\n", k)
+		// Comments
+		commetns := fmt.Sprintf("_%s_\n\n", v[1].tableComment)
+
+		// output columns info
+		for _, rloop := range v {
+
+			rowStr = fmt.Sprintf("%s| %s | %s | %s | %s | %s |\n",
+				rowStr,
+				rloop.columnName,
+				rloop.dataType,
+				rloop.characterMaximumLength,
+				rloop.isNullable,
+				rloop.columnComment,
+			)
+		}
+
+		_, err = f.Write([]byte(title))
+		_, err = f.Write([]byte(commetns))
+		_, err = f.Write([]byte(TableHeader1))
+		_, err = f.Write([]byte(TableHeader2))
+
+		_, err = f.Write([]byte(rowStr))
+
+		// rowStr = ""
+	}
+
+	f.Sync()
 }

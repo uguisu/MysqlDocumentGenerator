@@ -26,6 +26,12 @@ const SQL string = "SELECT " +
 	"ORDER BY " +
 	"    t.table_name, c.ordinal_position"
 
+// Output file name
+const OutputFileName string = "Database.md"
+
+const TableHeader1 string = "| Column Name | Type | Length | Nullable | Column Comment |\n"
+const TableHeader2 string = "| --------------- | --------------- | --------------- | --------------- | --------------- |\n"
+
 // Table record structor
 type TabelInfo struct {
 	tabelName              string
