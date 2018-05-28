@@ -10,7 +10,7 @@ type IgetConnection interface {
 type ConnectionInfo struct {
 	user       string
 	pwd        string
-	schema     string
+	Schema     string
 	port       string
 	serverName string
 }
@@ -25,7 +25,7 @@ func (cInfo ConnectionInfo) GetConnectionString() string {
 		cInfo.pwd,
 		cInfo.serverName,
 		cInfo.port,
-		cInfo.schema,
+		cInfo.Schema,
 	)
 }
 
@@ -38,6 +38,6 @@ func Create() *ConnectionInfo {
 		pwd:        "root",
 		serverName: "192.168.11.116",
 		port:       "3306",
-		schema:     "himysql",
+		Schema:     "himysql",
 	}
 }

@@ -31,7 +31,7 @@ func main() {
 	defer db.Close()
 
 	// Execute Sql statement
-	rows, err := db.Query(SQL)
+	rows, err := db.Query(fmt.Sprintf(SQL, config.GetConnectionInfoObject().Schema))
 	checkErr(err)
 
 	// Read and transfer data

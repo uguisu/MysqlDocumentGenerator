@@ -22,7 +22,7 @@ const SQL string = "SELECT " +
 	"    AND t.table_name = c.table_name " +
 	"WHERE " +
 	"    t.table_type = 'BASE TABLE' " +
-	"    AND t.table_schema = 'himysql' " +
+	"    AND t.table_schema = '%s' " +
 	"ORDER BY " +
 	"    t.table_name, c.ordinal_position"
 
