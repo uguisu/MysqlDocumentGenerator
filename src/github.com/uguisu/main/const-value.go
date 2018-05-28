@@ -28,14 +28,13 @@ const SQL string = "SELECT " +
 
 // Table record structor
 type TabelInfo struct {
-	tabel_name    string
-	table_comment string
-	column_name   string
-	// TODO: how  to use sql.NullString
-	collation_name           string
-	data_type                string
-	character_maximum_length string
-	column_key               string
-	is_nullable              string
-	column_comment           string
+	tabelName              string
+	tableComment           string
+	columnName             string
+	collationName          string
+	dataType               string
+	characterMaximumLength string
+	columnKey              string
+	isNullable             string
+	columnComment          string
 }
