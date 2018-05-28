@@ -117,6 +117,7 @@ func transferRowsToMap(rows *sql.Rows) map[string][]TabelInfo {
  */
 func writeToMd(tableMap map[string][]TabelInfo) {
 	var rowStr = ""
+	var pk = ""
 	var err error = nil
 
 	// create output file
@@ -134,9 +135,15 @@ func writeToMd(tableMap map[string][]TabelInfo) {
 		// output columns info
 		for _, rloop := range v {
 
+			if rloop.columnKey == "PRI" {
+				pk = fmt.Sprintf("`%s`", rloop.columnName)
+			} else {
+				pk = rloop.columnName
+			}
+
 			rowStr = fmt.Sprintf("%s| %s | %s | %s | %s | %s |\n",
 				rowStr,
-				rloop.columnName,
+				pk,
 				rloop.dataType,
 				rloop.characterMaximumLength,
 				rloop.isNullable,
