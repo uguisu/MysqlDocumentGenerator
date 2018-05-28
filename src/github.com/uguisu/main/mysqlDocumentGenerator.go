@@ -92,6 +92,8 @@ func transferRowsToMap(rows *sql.Rows) map[string][]TabelInfo {
 	log.Printf("total = %d", len(tableRecordCollection))
 
 	var lastTableName string = tableRecordCollection[0].tabelName
+	log.Printf("find = %s", lastTableName)
+
 	var lastStartIndex = 0
 	tableMap := make(map[string][]TabelInfo, 0)
 	for i, val := range tableRecordCollection {
